@@ -26,12 +26,10 @@ const Login = (props)=>{
         // })
 
         try {
-            const user = await axios.post("https://rkv-forums-api.herokuapp.com/api/v1/auth/login",{email,password},{withCredentials:true})
+            const user = await axios.post("http://localhost:3000/api/v1/auth/login",{email,password},{withCredentials:true})
             if(user){
                 console.log(user);
-               const users = await axios.get("https://rkv-forums-api.herokuapp.com/api/v1/users",{withCredentials:true},{headers: {
-                'Content-Type': 'application/json'
-                }})
+               const users = await axios.get("http://localhost:3000/api/v1/users",{withCredentials:true})
                console.log(users);
                navigate("/")
             }
