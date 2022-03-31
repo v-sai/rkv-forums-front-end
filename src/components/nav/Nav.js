@@ -1,12 +1,13 @@
 import React from "react";
+import styles from  "./Nav.module.css"
 
 
 const Nav = ()=>{
-    return <div className="nav-container">
+    return <div className={styles.nav_container}>
         <nav>
             <img src="LOGO.svg" alt="logo"/>
-            <input type="text" placeholder="Search a question" />
-            <button >Join Now</button>
+            {/* <input className={styles.search_input} type="text" placeholder="  Search a question" />
+            <button className={styles.join_now_btn}>Join Now</button> */}
         </nav>
 </div>
 

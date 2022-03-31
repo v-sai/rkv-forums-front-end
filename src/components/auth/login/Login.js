@@ -2,31 +2,60 @@ import React,{useState} from "react";
 import styles from"./Login.module.css";
 
 import axios from "axios";
+import {useNavigate} from 'react-router-dom'
 
-const Login = ()=>{
+
+const Login = (props)=>{
     
     let [email,setEmail] = useState("")
     let [password,setPassword] = useState("")
+    const navigate = useNavigate();
 
     let handleSubmit =async(e)=>{
         e.preventDefault()
-        const user = await axios.post('https://rkv-forums-api.herokuapp.com/api/v1/auth/login')
-        if(user){
-            console.log(user);
-        }
-        console.log({email,password})
+        console.log({email,password});
 
+        // .then(user=>{
+        //     if(user){
+        //         console.log(user.data);
+        //        axios.get("https://rkv-forums-api.herokuapp.com/api/v1/users",{withCredentials:true}).then(users=>console.log(users)).catch(err=>console.log(err))
+        //         navigate("/")
+        //     }
+        // }).catch(err=>{
+            
+        // })
+
+        try {
+            const user = await axios.post("https://rkv-forums-api.herokuapp.com/api/v1/auth/login",{email,password},{withCredentials:true})
+            if(user){
+                console.log(user);
+               const users = await axios.get("https://rkv-forums-api.herokuapp.com/api/v1/users",{withCredentials:true},{headers: {
+                'Content-Type': 'application/json'
+                }})
+               console.log(users);
+               navigate("/")
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return <div className={styles.login_container}>
         
         <h1 className={styles.login_title}>Sign In</h1>
             <input className={styles.input_login} type="text" placeholder=" Email" value={email} onChange={(e)=>setEmail(e.target.value)} />
-            <input className={styles.input_login} type="text" placeholder=" Password" value={password} onChange={(e)=>setPassword(e.target.value)} />
+            <input className={styles.input_login} type="password" placeholder=" Password" value={password} onChange={(e)=>setPassword(e.target.value)} />
             <button onClick={(e)=>handleSubmit(e)} className={styles.login_btn}>Log In</button>
             <a href="1" className={styles.forget_password_txt}>Forget Your Password ?</a>
-            <p className={styles.or_divider}>or</p>
-            <button className={styles.google_btn}>continue with Google</button>
+            <div  className={styles.or_divider}>
+                <hr className={styles.dash_line}/> 
+                <p>or</p>
+                <hr className={styles.dash_line}/> 
+            </div>
+            <div className={styles.google_btn}>
+                <img src="google-icon.svg" alt="google" />
+                <p>  continue with Google</p>
+            </div>
             <p className={styles.register_txt}>Don't have account? <a href="1">Register</a></p>
     </div>
 }
